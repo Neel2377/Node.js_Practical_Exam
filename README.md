@@ -5,7 +5,13 @@ Simple role-based authentication demo built with Node.js, Express, EJS and Mongo
 
 ## Deploy Link
 
-- Link: 
+- Link: https://node-js-practical-exam.onrender.com
+
+
+## Admin Credentials
+
+- Email: admin@gmail.com
+- Password: admin12
 
 
 ## What this project is
