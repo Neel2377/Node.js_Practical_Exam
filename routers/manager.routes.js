@@ -7,7 +7,6 @@ router.use(verifyToken, checkRole(['manager', 'admin']));
 
 router.get('/', managerCtl.dashboard);
 
-
 router.get('/employees', managerCtl.listEmployees);
 router.post('/add-employee', managerCtl.addEmployee);
 router.post('/edit-employee/:id', managerCtl.editEmployee);

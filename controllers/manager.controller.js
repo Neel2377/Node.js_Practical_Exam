@@ -1,12 +1,15 @@
-const bcrypt = require('bcrypt');
-const User = require('../models/user.model');
-const Task = require('../models/task.model');
+const bcrypt = require("bcrypt");
+const User = require("../models/user.model");
+const Task = require("../models/task.model");
 
 exports.dashboard = async (req, res) => {
   try {
     const managerId = req.user._id;
 
-    const employees = await User.find({ role: 'employee', $or: [{ createdBy: req.user._id }, { createdBy: { $exists: false } }] }).lean();
+    const employees = await User.find({
+      role: "employee",
+      $or: [{ createdBy: req.user._id }, { createdBy: { $exists: false } }],
+    }).lean();
     const employeeIds = employees.map((e) => e._id);
 
     const totalTasks = await Task.countDocuments({ assignedBy: managerId });
@@ -33,14 +36,16 @@ exports.dashboard = async (req, res) => {
   }
 };
 
-
 exports.listEmployees = async (req, res) => {
   try {
-    const employees = await User.find({ role: 'employee', $or: [{ createdBy: req.user._id }, { createdBy: { $exists: false } }] }).lean();
-    res.render('./pages/manager/employees', { user: req.user, employees });
+    const employees = await User.find({
+      role: "employee",
+      $or: [{ createdBy: req.user._id }, { createdBy: { $exists: false } }],
+    }).lean();
+    res.render("./pages/manager/employees", { user: req.user, employees });
   } catch (err) {
-    console.error('Employee List Error:', err);
-    res.redirect('/manager');
+    console.error("Employee List Error:", err);
+    res.redirect("/manager");
   }
 };
 
@@ -52,13 +57,13 @@ exports.addEmployee = async (req, res) => {
       name,
       email,
       password,
-      role: 'employee',
-      createdBy: req.user._id
+      role: "employee",
+      createdBy: req.user._id,
     });
-    res.redirect('/manager/employees');
+    res.redirect("/manager/employees");
   } catch (err) {
-    console.error('Add Employee Error:', err);
-    res.redirect('/manager/employees');
+    console.error("Add Employee Error:", err);
+    res.redirect("/manager/employees");
   }
 };
 
@@ -68,10 +73,10 @@ exports.editEmployee = async (req, res) => {
     const { name, email } = req.body;
     await User.findByIdAndUpdate(id, { name, email });
 
-    res.redirect('/manager/employees');
+    res.redirect("/manager/employees");
   } catch (err) {
-    console.error('Edit Employee Error:', err);
-    res.redirect('/manager/employees');
+    console.error("Edit Employee Error:", err);
+    res.redirect("/manager/employees");
   }
 };
 
@@ -80,32 +85,28 @@ exports.deleteEmployee = async (req, res) => {
     const { id } = req.params;
     await User.findByIdAndDelete(id);
     await Task.deleteMany({ assignedTo: id });
-    res.redirect('/manager/employees');
+    res.redirect("/manager/employees");
   } catch (err) {
-    console.error('Delete Employee Error:', err);
-    res.redirect('/manager/employees');
+    console.error("Delete Employee Error:", err);
+    res.redirect("/manager/employees");
   }
 };
 
 exports.assignTaskPage = async (req, res) => {
   try {
     const employees = await User.find({
-      role: 'employee',
-      $or: [
-        { createdBy: req.user._id },
-        { createdBy: { $exists: false } } 
-      ]
+      role: "employee",
+      $or: [{ createdBy: req.user._id }, { createdBy: { $exists: false } }],
     }).lean();
 
     if (!employees || employees.length === 0) {
-   
-      return res.redirect('/manager/employees');
+      return res.redirect("/manager/employees");
     }
 
-    res.render('./pages/manager/assignTask', { user: req.user, employees });
+    res.render("./pages/manager/assignTask", { user: req.user, employees });
   } catch (err) {
-    console.error('Assign Task Page Error:', err);
-    res.redirect('/manager/dashboard');
+    console.error("Assign Task Page Error:", err);
+    res.redirect("/manager/dashboard");
   }
 };
 
@@ -132,15 +133,15 @@ exports.assignTask = async (req, res) => {
 exports.listTasks = async (req, res) => {
   try {
     const tasks = await Task.find({ assignedBy: req.user._id })
-      .populate('assignedTo', 'name email')
-      .populate('assignedBy', 'name')
+      .populate("assignedTo", "name email")
+      .populate("assignedBy", "name")
       .lean();
 
-    res.render('./pages/manager/tasks', { user: req.user, tasks });
+    res.render("./pages/manager/tasks", { user: req.user, tasks });
   } catch (err) {
-    console.error('List Tasks Error:', err);
-   
-    res.redirect('/manager');
+    console.error("List Tasks Error:", err);
+
+    res.redirect("/manager");
   }
 };
 
@@ -150,18 +151,15 @@ exports.updateTaskStatus = async (req, res) => {
     const { status } = req.body;
     await Task.findByIdAndUpdate(id, { status });
 
-
-    res.redirect('/manager/tasks');
+    res.redirect("/manager/tasks");
   } catch (err) {
-    console.error('Update Task Status Error:', err);
-    res.redirect('/manager/tasks');
+    console.error("Update Task Status Error:", err);
+    res.redirect("/manager/tasks");
   }
 };
 
-
 exports.logoutUser = (req, res) => {
-  res.clearCookie('token');
+  res.clearCookie("token");
 
-  res.redirect('/user/login');
+  res.redirect("/user/login");
 };
-

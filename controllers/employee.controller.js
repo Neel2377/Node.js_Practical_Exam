@@ -1,10 +1,12 @@
-const Task = require('../models/task.model');
-const User = require('../models/user.model');
+const Task = require("../models/task.model");
+const User = require("../models/user.model");
 
 exports.dashboard = async (req, res) => {
   try {
-    const tasks = await Task.find({ assignedTo: req.user._id })
-      .populate("assignedBy", "name email");
+    const tasks = await Task.find({ assignedTo: req.user._id }).populate(
+      "assignedBy",
+      "name email"
+    );
     res.render("./pages/employee/dashboard", { user: req.user, tasks });
   } catch (err) {
     console.error(err);
@@ -14,13 +16,15 @@ exports.dashboard = async (req, res) => {
 
 exports.myTasks = async (req, res) => {
   try {
-    const tasks = await Task.find({ assignedTo: req.user._id })
-      .populate('assignedBy', 'name');
-    res.render('pages/employee/tasks', { user: req.user, tasks });
+    const tasks = await Task.find({ assignedTo: req.user._id }).populate(
+      "assignedBy",
+      "name"
+    );
+    res.render("pages/employee/tasks", { user: req.user, tasks });
   } catch (err) {
     console.log(err);
 
-    res.redirect('/employee');
+    res.redirect("/employee");
   }
 };
 
@@ -41,4 +45,3 @@ exports.addComment = async (req, res) => {
 
   res.redirect("/employee/my-tasks");
 };
-

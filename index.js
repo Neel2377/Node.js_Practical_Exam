@@ -30,6 +30,6 @@ app.use('/', require('./routers'));
 app.listen(port, (err) => {
     if(!err){
         db();
-        console.log("Server start at -> http://localhost:"+port);   
+        console.log("Server start at http://localhost:"+port);   
     }
 })
