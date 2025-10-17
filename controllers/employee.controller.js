@@ -1,7 +1,6 @@
 const Task = require('../models/task.model');
 const User = require('../models/user.model');
 
-// 🏠 Employee Dashboard
 exports.dashboard = async (req, res) => {
   try {
     const tasks = await Task.find({ assignedTo: req.user._id })
@@ -13,8 +12,6 @@ exports.dashboard = async (req, res) => {
   }
 };
 
-
-// 📋 View My Tasks
 exports.myTasks = async (req, res) => {
   try {
     const tasks = await Task.find({ assignedTo: req.user._id })
@@ -27,7 +24,6 @@ exports.myTasks = async (req, res) => {
   }
 };
 
-// ✅ Update Task Status
 exports.updateTaskStatus = async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
@@ -46,32 +42,3 @@ exports.addComment = async (req, res) => {
   res.redirect("/employee/my-tasks");
 };
 
-
-// GET Profile
-exports.profilePage = async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id).lean();
-    if (!user) {
-  
-      return res.redirect('/employee');
-    }
-    res.render('./pages/employee/profile', { user });
-  } catch (err) {
-    console.error(err);
-
-    res.redirect('/employee');
-  }
-};
-
-// POST Update Profile
-exports.updateProfile = async (req, res) => {
-  try {
-    const { name, email, age, address, mobile, gender, bloodGroup } = req.body;
-    await User.findByIdAndUpdate(req.params.id, { name, email, age, address, mobile, gender, bloodGroup });
-
-    res.redirect(`/employee/profile/${req.params.id}`);
-  } catch (err) {
-    console.error(err);
-    res.redirect(`/employee/profile/${req.params.id}`);
-  }
-};

@@ -2,8 +2,6 @@ const bcrypt = require('bcrypt');
 const User = require('../models/user.model');
 const Task = require('../models/task.model');
 
-
-
 exports.dashboard = async (req, res) => {
   try {
     const managerId = req.user._id;
@@ -36,7 +34,6 @@ exports.dashboard = async (req, res) => {
 };
 
 
-// 👥 Employee List (Team Page)
 exports.listEmployees = async (req, res) => {
   try {
     const employees = await User.find({ role: 'employee', $or: [{ createdBy: req.user._id }, { createdBy: { $exists: false } }] }).lean();
@@ -47,7 +44,6 @@ exports.listEmployees = async (req, res) => {
   }
 };
 
-// ➕ Add Employee
 exports.addEmployee = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -66,7 +62,6 @@ exports.addEmployee = async (req, res) => {
   }
 };
 
-// ✏️ Edit Employee
 exports.editEmployee = async (req, res) => {
   try {
     const { id } = req.params;
@@ -80,7 +75,6 @@ exports.editEmployee = async (req, res) => {
   }
 };
 
-// ❌ Delete Employee
 exports.deleteEmployee = async (req, res) => {
   try {
     const { id } = req.params;
@@ -95,12 +89,11 @@ exports.deleteEmployee = async (req, res) => {
 
 exports.assignTaskPage = async (req, res) => {
   try {
-    // 🔹 Show both — employees created by this manager and manually added (no createdBy)
     const employees = await User.find({
       role: 'employee',
       $or: [
         { createdBy: req.user._id },
-        { createdBy: { $exists: false } } // manually added employees
+        { createdBy: { $exists: false } } 
       ]
     }).lean();
 
@@ -127,7 +120,7 @@ exports.assignTask = async (req, res) => {
       assignedBy: req.user._id,
       assignedTo,
     });
-  
+
     res.redirect("/manager/tasks");
   } catch (err) {
     console.error(err);

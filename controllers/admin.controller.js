@@ -31,7 +31,6 @@ exports.listManagers = async (req, res) => {
   }
 };
 
-// 👷 Employees List
 exports.listEmployees = async (req, res) => {
   try {
     const employees = await User.find({ role: 'employee' });
@@ -45,7 +44,6 @@ exports.listEmployees = async (req, res) => {
   }
 };
 
-// ➕ Add New User (manager/employee)
 exports.addUser = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
@@ -60,7 +58,6 @@ exports.addUser = async (req, res) => {
   }
 };
 
-// ✏️ Edit User
 exports.editUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -75,7 +72,7 @@ exports.editUser = async (req, res) => {
   }
 };
 
-// ❌ Delete User
+
 exports.deleteUser = async (req, res) => {
   try {
     const { id } = req.params;

@@ -9,9 +9,6 @@ router.get('/', employeeCtl.dashboard);
 router.get('/my-tasks', employeeCtl.myTasks);
 router.post('/update-task/:id', employeeCtl.updateTaskStatus);
 
-router.get('/profile/:id', employeeCtl.profilePage);
-router.post('/profile/:id', employeeCtl.updateProfile);
-
 router.post('/comment/:id', employeeCtl.addComment);
 
 module.exports = router;
