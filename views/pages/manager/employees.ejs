@@ -19,13 +19,13 @@
       <div class="employee-card d-flex justify-content-between align-items-center mt-4">
         <div>
           <h5><%= emp.name %></h5>
-          <p class="text-muted mb-0"><%= emp.email %></p>
+          <p class="text-primary mb-0"><%= emp.email %></p>
         </div>
         <div class="employee-actions">
           <form action="/manager/delete-employee/<%= emp._id %>" method="get" style="display:inline;">
             <button class="btn btn-danger btn-sm">Delete</button>
           </form>
-          <a href="/manager/assign-task?employeeId=<%= emp._id %>" class="btn btn-success btn-sm">Assign Task</a>
+          <a href="/manager/assign-task?employeeId=<%= emp._id %>" class="btn btn-success btn-sm text-white">Assign Task</a>
         </div>
       </div>
     <% }) %>
